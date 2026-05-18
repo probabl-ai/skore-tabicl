@@ -8,23 +8,20 @@ Five demos benchmarking [TabICL](https://github.com/soda-inria/tabicl) (the open
 
 | # | Notebook | Theme |
 |---|---|---|
-| 1 | `demos/demo1_five_minute_model.ipynb` | TabICL default vs HGBT default vs HGBT + Optuna |
-| 2 | `demos/demo2_dirty_data.ipynb` | skrub `TableVectorizer` recovers dropped columns; TabICL on top |
-| 3 | `demos/demo3_calibrated_probs.ipynb` | reliability diagrams + ECE on imbalanced fraud data |
-| 4 | `demos/demo4_quantile_regression.ipynb` | HGBT q-ensemble vs TabICL's native distribution |
-| 5 | `demos/demo5_small_data.ipynb` | learning-curve sweep 50 → 500 rows |
+| 1 | `demo1_five_minute_model.py` | TabICL default vs HGBT default vs HGBT + Optuna |
+| 2 | `demo2_dirty_data.py` | skrub `TableVectorizer` recovers dropped columns; TabICL on top |
+| 3 | `demo3_calibrated_probs.py` | reliability diagrams + ECE on imbalanced fraud data |
+| 4 | `demo4_quantile_regression.py` | HGBT q-ensemble vs TabICL's native distribution |
+| 5 | `demo5_small_data.py` | learning-curve sweep 50 → 500 rows |
 
 ## Quickstart
 
 ```bash
 # Python 3.12 venv
-uv pip install --python .venv/bin/python jupyterlab optuna ipykernel
+uv pip install --python .venv/bin/python optuna ipykernel
 
 # Set secrets
 cp .env.example .env  # add SKORE_HUB_API_KEY
-
-# Launch JupyterLab and open any demo
-.venv/bin/jupyter lab demos/
 ```
 
 Every notebook calls `skore.login()` and pushes individual `EstimatorReport`s to `debray.yann/demoN-...` on Skore Hub.
