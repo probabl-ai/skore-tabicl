@@ -1,0 +1,6 @@
+jupyterlab 
+optuna 
+ipykernel
+pandas
+skore
+tabicl
