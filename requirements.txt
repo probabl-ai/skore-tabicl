@@ -1,0 +1,6 @@
+optuna 
+ipykernel
+pandas
+skore[hub]
+tabicl
+skrub
