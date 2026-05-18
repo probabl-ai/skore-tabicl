@@ -2,5 +2,6 @@ jupyterlab
 optuna 
 ipykernel
 pandas
-skore
+skore[hub]
 tabicl
+skrub
