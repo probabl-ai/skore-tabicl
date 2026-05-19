@@ -13,17 +13,17 @@
 #
 # Two numbers per model: ROC AUC and total wall-clock time *including* tuning.
 
+# %% 
+my_workspace = "" 
+# Set `my_workspace` to your Skore workspace name to upload the results at the end.
+# If left empty, the upload step will be skipped.
+
 # %%
 import os
 import time
-import warnings
 from contextlib import contextmanager
 from pathlib import Path
 
-warnings.filterwarnings("ignore")
-
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 from sklearn.datasets import fetch_openml
@@ -91,19 +91,25 @@ print(f"Class balance: {y.value_counts(normalize=True).round(3).to_dict()}")
 
 # %%
 results = {}
+pipe_default = make_pipeline(
+    TableVectorizer(),
+    HistGradientBoostingClassifier(random_state=42),
+)
 
-with stopwatch("HGBT default") as elapsed:
-    pipe_default = make_pipeline(
-        TableVectorizer(),
-        HistGradientBoostingClassifier(random_state=42),
-    )
-    pipe_default.fit(X_train, y_train)
-    auc_default = roc_auc_score(y_test, pipe_default.predict_proba(X_test)[:, 1])
-    t_default = elapsed()
-results["HGBT default"] = {"auc": auc_default, "time_s": t_default, "color": GRAY}
-print(f"  ROC AUC: {auc_default:.4f}")
+report_default = skore.EstimatorReport(
+    pipe_default,
+    X_train=X_train, y_train=y_train,
+    X_test=X_test, y_test=y_test,
+    pos_label=1,
+)
+
+results["HGBT default"] = {"auc": report_default.metrics.roc_auc(), 
+                           "time_s": report_default.metrics.fit_time(), 
+                           "color": GRAY}
+print(f"ROC AUC for HGBT default: {report_default.metrics.roc_auc():.4f}")
 
 
+# %%
 def objective(trial):
     params = {
         "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.3, log=True),
@@ -131,7 +137,7 @@ with stopwatch("HGBT + Optuna (20 trials)") as elapsed:
     auc_tuned = roc_auc_score(y_test, pipe_tuned.predict_proba(X_test)[:, 1])
     t_tuned = elapsed()
 results["HGBT + Optuna"] = {"auc": auc_tuned, "time_s": t_tuned, "color": BLUE}
-print(f"  ROC AUC: {auc_tuned:.4f}")
+print(f"ROC AUC: {auc_tuned:.4f}")
 
 
 with stopwatch("TabICL default") as elapsed:
@@ -147,12 +153,6 @@ print(f"  ROC AUC: {auc_tabicl:.4f}")
 
 
 # %%
-report_default = skore.EstimatorReport(
-    pipe_default, fit=False,
-    X_train=X_train, y_train=y_train,
-    X_test=X_test, y_test=y_test,
-    pos_label=1,
-)
 report_tuned = skore.EstimatorReport(
     pipe_tuned, fit=False,
     X_train=X_train, y_train=y_train,
@@ -220,18 +220,25 @@ fig.text(0.99, 0.02, ":probabl.  ·  by the scikit-learn founders",
          ha="right", color="#666666", fontsize=9, style="italic")
 
 plt.tight_layout()
-out = Path("recordings/final/demo1_chart.png")
+out = Path("recordings/demo1_chart.png")
 out.parent.mkdir(parents=True, exist_ok=True)
 plt.savefig(out, dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 
 
 # %%
-project = skore.Project("debray.yann/demo1-five-minute-model", mode="hub")
+if my_workspace:
+    mode = "hub"
+else:
+    mode = "local"
+
+project = skore.Project(f"{my_workspace}/demo1-five-minute-model", mode=mode)
 project.put("hgbt-default", report_default)
 project.put("hgbt-tuned", report_tuned)
 project.put("tabicl-default", report_tabicl)
-print(f"https://skore.probabl.ai/{project.name}")
+
+if mode == "hub":
+    print(f"https://skore.probabl.ai/{project.name}")
 
 
 # %%
