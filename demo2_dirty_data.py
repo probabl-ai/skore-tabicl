@@ -29,25 +29,9 @@ my_workspace = ""
 # Set `my_workspace` to your Skore workspace name to upload the results at the end.
 # If left empty, the project will be created in "local" mode and the results won't be
 # uploaded to the Hub, but you can still see them in your local instance of Skore.
-# %%
-import os
-from pathlib import Path
 
-# %% [markdown]
-# Load SKORE_HUB_API_KEY from .env at the repo root.
-# _repo_root = Path.cwd()
-# while not (_repo_root / ".env").exists() and _repo_root != _repo_root.parent:
-#     _repo_root = _repo_root.parent
-# _env_path = _repo_root / ".env"
-# if _env_path.exists():
-#     for _line in _env_path.read_text().splitlines():
-#         _line = _line.strip()
-#         if _line and not _line.startswith("#") and "=" in _line:
-#             _k, _v = _line.split("=", 1)
-#             os.environ.setdefault(_k.strip(), _v.strip().strip('"'))
 # %%
 import skore
-# if "SKORE_HUB_API_KEY" in os.environ:
 skore.login()
 
 
@@ -148,8 +132,6 @@ for name, pipe in pipelines.items():
 # renders the metrics table and the prediction-error scatter side-by-side.
 
 # %%
-import skore
-
 reports = {}
 for name, pipe in fitted.items():
     print(f"creating report for {name}")

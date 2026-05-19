@@ -47,7 +47,6 @@ if env_path.exists():
 
 skore.login()
 
-optuna.logging.set_verbosity(optuna.logging.WARNING)
 plt.rcParams["figure.dpi"] = 110
 
 BLUE = "#1E22AA"
@@ -185,8 +184,6 @@ display = comparison.metrics.precision_recall()
 display.plot()
 
 # %%
-from pathlib import Path
-
 fig, ax = plt.subplots(figsize=(9, 5.2))
 for name, r in results.items():
     ax.scatter(
@@ -240,6 +237,3 @@ project.put("tabicl-default", report_tabicl)
 
 if mode == "hub":
     print(f"https://skore.probabl.ai/{project.name}")
-
-
-# %%
