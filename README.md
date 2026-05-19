@@ -20,8 +20,10 @@ Five demos benchmarking [TabICL](https://github.com/soda-inria/tabicl) (the open
 pip install -r requirements.txt
 ```
 
-1. create an account at [skore login](skore.probabl.ai/login?register=true)
-2. 
+1. install requirements
+2. create an account at [skore login](skore.probabl.ai/login?register=true) if you want to use remote. If not, remove the `skore.login()` code.
+3. change the workspace name to your if you want to use remote.
+4. execute the code and enjoy!
 
 ## Notes
 
