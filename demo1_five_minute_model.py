@@ -16,7 +16,8 @@
 # %% 
 my_workspace = "" 
 # Set `my_workspace` to your Skore workspace name to upload the results at the end.
-# If left empty, the upload step will be skipped.
+# If left empty, the project will be created in "local" mode and the results won't be
+# uploaded to the Hub, but you can still see them in your local instance of Skore.
 
 # %%
 import os
