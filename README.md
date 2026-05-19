@@ -17,16 +17,13 @@ Five demos benchmarking [TabICL](https://github.com/soda-inria/tabicl) (the open
 ## Quickstart
 
 ```bash
-# Python 3.12 venv
-uv pip install --python .venv/bin/python optuna ipykernel
-
-# Set secrets
-cp .env.example .env  # add SKORE_HUB_API_KEY
+pip install -r requirements.txt
 ```
 
-Every notebook calls `skore.login()` and pushes individual `EstimatorReport`s to `debray.yann/demoN-...` on Skore Hub.
+1. create an account at [skore login](skore.probabl.ai/login?register=true)
+2. 
 
 ## Notes
 
-- Six demos × ~2 min each, runnable on macOS CPU (no CUDA). The longest cell is ~30 s.
+- Six demos of ~2 min each, runnable on macOS CPU (no CUDA). The longest cell is ~30 s.
 - TabICL classifier + regressor checkpoints (~few hundred MB) download from HuggingFace on first use.
